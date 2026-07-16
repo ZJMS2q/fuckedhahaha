@@ -1,82 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HAHAHA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEMA INVADIDO</title>
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#000;
-    overflow:hidden;
-    font-family:Consolas, monospace;
-}
-
-/* Fundo estilo hacker */
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:
-    repeating-linear-gradient(
-        0deg,
-        rgba(0,255,0,.08) 0px,
-        rgba(0,255,0,.08) 2px,
-        transparent 2px,
-        transparent 4px
-    );
-    animation:scan 8s linear infinite;
-    opacity:.5;
-}
-
-body::after{
-    content:"01010110 01101001 01110010 01110101 01110011 00100000 01000001 01100011 01100011 01100101 01110011 01110011";
-    position:fixed;
-    inset:0;
-    color:rgba(0,255,0,.08);
-    font-size:20px;
-    line-height:30px;
-    white-space:pre-wrap;
-    padding:20px;
-    overflow:hidden;
-    pointer-events:none;
-}
-
-h1{
-    color:#00ff00;
-    font-size:70px;
-    text-align:center;
-    text-shadow:
-        0 0 10px #00ff00,
-        0 0 20px #00ff00,
-        0 0 40px #00ff00;
-    z-index:1;
-    animation:glitch .15s infinite alternate;
-}
-
-@keyframes scan{
-    from{transform:translateY(-100%);}
-    to{transform:translateY(100%);}
-}
-
-@keyframes glitch{
-    from{transform:translateX(-2px);}
-    to{transform:translateX(2px);}
-}
-</style>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { 
+            height:100vh; display:flex; justify-content:center; align-items:center; 
+            background:#000; overflow:hidden; font-family:Consolas, monospace; cursor: crosshair;
+        }
+        body::before {
+            content:""; position:fixed; inset:0;
+            background: repeating-linear-gradient(0deg, rgba(0,255,0,.08) 0px, rgba(0,255,0,.08) 2px, transparent 2px, transparent 4px);
+            animation:scan 8s linear infinite; opacity:.5; pointer-events:none;
+        }
+        h1 {
+            color:#00ff00; font-size:70px; text-align:center;
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 40px #00ff00;
+            z-index:1; animation:glitch .15s infinite alternate;
+        }
+        @keyframes scan { from{transform:translateY(-100%);} to{transform:translateY(100%);} }
+        @keyframes glitch { from{transform:translateX(-2px);} to{transform:translateX(2px);} }
+        
+        #overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            display: flex; justify-content: center; align-items: center;
+            color: #ff0000; font-size: 20px; cursor: pointer; z-index: 10;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Overlay para garantir que o navegador permita o som -->
+    <div id="overlay" onclick="iniciarSistema()">
+        <div>CLIQUE PARA INICIAR O SISTEMA</div>
+    </div>
+
     <h1>SISTEMA INVADIDO BY ZJMS2</h1>
+
+    <!-- Substitua o link abaixo pelo seu arquivo de som hospedado -->
+    <audio id="terrorAudio" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        function iniciarSistema() {
+            const overlay = document.getElementById('overlay');
+            const audio = document.getElementById('terrorAudio');
+            
+            overlay.style.display = 'none'; // Remove a tela de bloqueio
+            audio.play(); // Inicia o som
+        }
+    </script>
 </body>
 </html>
